@@ -1,0 +1,375 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Povio Labs Assignment",
+        "description": "NodeJS Test Assignment"
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "User rating system"
+        }
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/signup": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Sign up to the system (username, password)",
+                "requestBody": {
+                    "description": "Sign up params",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/UserAuthParams"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserAuthorization"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Logs in an existing user with a password",
+                "requestBody": {
+                    "description": "Login params",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/UserAuthParams"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserAuthorization"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get the currently logged in user information",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "description": "Bearer Token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserPublic"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/me/update-password": {
+            "put": {
+                "summary": "Update the current users password",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "description": "Bearer Token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List username & number of likes of a user",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "User id",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserAuthorization"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    }
+                }
+            }
+        },
+        "/user/{id}/like": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Like a user",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "User id",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "description": "Bearer Token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/user/{id}/unlike": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Un-Like a user",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "User id",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "description": "Bearer Token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/most-liked": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List users in a most liked to least liked",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/UserPublic"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "id": {
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserPublic": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "likes": {
+                    "type": "number"
+                }
+            }
+        },
+        "UserAuthorization": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserAuthParams": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

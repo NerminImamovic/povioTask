@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mongo-test:
+    image: mongo:5.0
+    container_name: mongo-test
+    restart: always
+    networks:
+      - dev-network
+    ports:
+      - "27017:27017"
+
+networks:
+  dev-network:
+    driver: bridge
