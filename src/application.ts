@@ -6,6 +6,8 @@ import swaggerUi from 'swagger-ui-express';
 import userRoutes from './routes/UserRoutes';
 import * as swaggerDocument from '../swagger.json';
 
+require('dotenv').config();
+
 class Application {
   private readonly _instance: ExpressApplication;
 
@@ -29,10 +31,8 @@ class Application {
   }
 
   private async connectDatabase() {
-    // console.log(`ENV ${JSON.stringify(process.env.MONGO_URL)}`);
-
     if (process.env.NODE_ENV !== 'test') {
-      await mongoose.connect('mongodb://localhost:27017/users');
+      await mongoose.connect(process.env.MONGO_URL);
     }
   }
 }

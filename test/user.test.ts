@@ -5,15 +5,14 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 import { UserAuth } from '../src/types';
 
+require('dotenv').config();
 const server = require('../src/server');
 
 const request = supertest('http://localhost:3000');
 
 describe('Application Endpoint tests', () => {
-  console.log(`MONGO ${process.env.MONGO_URL}`);
-
-  beforeEach(() => {
-    mongoose.connect('mongodb://localhost:27017/user-tests');
+  beforeEach(async () => {
+    await mongoose.connect(process.env.MONGO_URL);
   });
 
   afterEach(async () => {
