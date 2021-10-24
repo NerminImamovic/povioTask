@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon ./src/app.ts",
+    "start": "nodemon ./src/server.ts",
     "test": "NODE_ENV=test jest --forceExit",
     "lint": "./node_modules/eslint/bin/eslint.js  src --ext .ts",
     "lint:fix": "npm run lint --fix"

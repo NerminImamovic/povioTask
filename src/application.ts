@@ -3,9 +3,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import swaggerUi from 'swagger-ui-express';
 
-import routes from './routes/routes';
-
-import * as swaggerDocument from './swagger.json';
+import userRoutes from './routes/UserRoutes';
+import * as swaggerDocument from '../swagger.json';
 
 class Application {
   private readonly _instance: ExpressApplication;
@@ -24,14 +23,16 @@ class Application {
   }
 
   private registerRouters() {
-    this._instance.use(routes);
+    this._instance.use(userRoutes);
 
     this._instance.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   }
 
   private async connectDatabase() {
+    // console.log(`ENV ${JSON.stringify(process.env.MONGO_URL)}`);
+
     if (process.env.NODE_ENV !== 'test') {
-      await mongoose.connect('mongodb://localhost:27017/user-tests');
+      await mongoose.connect('mongodb://localhost:27017/users');
     }
   }
 }

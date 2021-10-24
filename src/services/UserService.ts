@@ -4,7 +4,7 @@ import { UserAuth, UserPublic, UserVerificationData } from '../types';
 
 import { IUserService } from './interfaces';
 import User, { IUser } from '../models/User';
-import { generateAccessToken } from '../middlewares';
+import { generateAccessToken } from '../helpers/JwtHelper';
 import { HttpError } from '../helpers/errors/HttpError';
 
 export default class UserService implements IUserService {

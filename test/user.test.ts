@@ -3,15 +3,17 @@
 */
 import mongoose from 'mongoose';
 import supertest from 'supertest';
-import { UserAuth, UserPublic } from '../src/types';
+import { UserAuth } from '../src/types';
 
 const server = require('../src/server');
 
 const request = supertest('http://localhost:3000');
 
 describe('Application Endpoint tests', () => {
-  beforeEach(async () => {
-    await mongoose.connect('mongodb://localhost:27017/test');
+  console.log(`MONGO ${process.env.MONGO_URL}`);
+
+  beforeEach(() => {
+    mongoose.connect('mongodb://localhost:27017/user-tests');
   });
 
   afterEach(async () => {
