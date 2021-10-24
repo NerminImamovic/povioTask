@@ -1,17 +1,34 @@
-version: '3'
+version: "3"
 
 services:
+  api-server:
+    build:
+      context: .
+    container_name: api-server
+    image: api-server
+    depends_on:
+      - "mongo"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGO_URL=mongodb://localhost:27017/users
+    volumes:
+      - ./logs:/logs
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
   mongo:
     image: mongo:5.0
-    container_name: mongo-dev
+    container_name: mongo
     restart: always
     networks:
-      - dev-network
+      - app-network
     volumes:
       - ./data/dev/mongo:/data/db
     ports:
       - "27017:27017"
 
 networks:
-  dev-network:
+  app-network:
     driver: bridge
