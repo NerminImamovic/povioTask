@@ -89,5 +89,3 @@ export const getMostLikedUsers = async (req:Request, res:Response) => {
     res.sendStatus(500);
   }
 };
-
-// export { signup, getMostLikedUsers. updatePassword };

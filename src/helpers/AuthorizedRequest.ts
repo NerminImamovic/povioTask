@@ -3,5 +3,5 @@ import { IUser } from '../models/User';
 
 export interface AuthorizedRequest extends Request
 {
-  user:IUser;
+  user: IUser;
 }

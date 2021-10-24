@@ -2,7 +2,8 @@ import {
   Model, Schema, model,
 } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { UserVerificationData } from '../types';
+
+import { UserAuthOptions } from '../helpers/TypeOptions';
 import { HttpError } from '../helpers/errors/HttpError';
 
 export interface IUser {
@@ -13,7 +14,7 @@ export interface IUser {
 }
 
 interface IUserModel extends Model<IUser> {
-  authenticate(verificationData:UserVerificationData):IUser;
+  authenticate(userAuthOptions:UserAuthOptions):IUser;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -44,8 +45,6 @@ UserSchema.pre('save', function (next) {
 UserSchema.pre('updateOne', { document: true, query: true }, async function (next) {
   const update = this._update;
 
-  // update.$set.password = await bcrypt.hash(update.$set.password, 10);
-
   if (update.$set.password) {
     bcrypt.hash(update.$set.password, 10, (err, hash) => {
       if (err) {
@@ -58,8 +57,8 @@ UserSchema.pre('updateOne', { document: true, query: true }, async function (nex
 });
 
 // authenticate input against database
-UserSchema.statics.authenticate = async (verificationData:UserVerificationData):Promise<IUser> => {
-  const { username, password } = verificationData;
+UserSchema.statics.authenticate = async (userAuthOptions:UserAuthOptions):Promise<IUser> => {
+  const { username, password } = userAuthOptions;
 
   const user = await User.findOne({ username });
 

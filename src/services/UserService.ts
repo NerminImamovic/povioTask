@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
-import { UserAuth, UserPublic, UserVerificationData } from '../types';
+import { UserAuth, UserPublic } from '../types';
+import { UserAuthOptions } from '../helpers/TypeOptions';
 
 import { IUserService } from './interfaces';
 import User, { IUser } from '../models/User';
@@ -13,19 +14,19 @@ export default class UserService implements IUserService {
     return this.mapUserToUserPublic(user);
   }
 
-  public async signup(verificationData:UserVerificationData):Promise<UserAuth> {
-    const existingUser = await User.findOne({ username: verificationData.username });
+  public async signup(userAuthOptions:UserAuthOptions):Promise<UserAuth> {
+    const existingUser = await User.findOne({ username: userAuthOptions.username });
 
     if (existingUser) {
       throw new HttpError({ status: 409, message: 'User with that username currently exists' });
     }
 
-    const user = await User.create(verificationData);
+    const user = await User.create(userAuthOptions);
     return this.mapUserToUserAuth(user);
   }
 
-  public async login(verificationData:UserVerificationData):Promise<UserAuth> {
-    const user = await User.authenticate(verificationData);
+  public async login(userAuthOptions:UserAuthOptions):Promise<UserAuth> {
+    const user = await User.authenticate(userAuthOptions);
     return this.mapUserToUserAuth(user);
   }
 
