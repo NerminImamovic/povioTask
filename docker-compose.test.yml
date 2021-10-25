@@ -4,5 +4,11 @@ services:
   mongo-test:
     image: mongo:5.0
     container_name: mongo-test
+    networks:
+      - test-network
     ports:
       - "27019:27017"
+
+networks:
+  test-network:
+    driver: bridge

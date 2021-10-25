@@ -1,9 +1,9 @@
 import * as http from 'http';
 
 import { PORT, NODE_ENV } from './constants';
-import application from './application';
+import Application from './Application';
 
-const server = http.createServer(application.instance);
+const server = http.createServer(Application.instance);
 
 if (NODE_ENV !== 'test') {
   server.listen(PORT, () => {

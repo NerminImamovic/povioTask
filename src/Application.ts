@@ -10,17 +10,17 @@ import * as swaggerDocument from '../swagger.json';
 class Application {
   private readonly _instance: ExpressApplication;
 
-  get instance(): ExpressApplication {
-    return this._instance;
-  }
-
-  constructor() {
+  public constructor() {
     this.connectDatabase();
     this._instance = express();
     this._instance.use(express.json());
     this._instance.use(bodyParser.json());
     this._instance.use(bodyParser.urlencoded({ extended: true }));
     this.registerRouters();
+  }
+
+  public get instance(): ExpressApplication {
+    return this._instance;
   }
 
   private registerRouters() {
