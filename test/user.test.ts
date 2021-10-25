@@ -3,9 +3,11 @@
 */
 import mongoose from 'mongoose';
 import supertest from 'supertest';
+import * as http from 'http';
 
 import { UserAuth } from '../src/types';
 import { MONGO_URL, PORT } from '../src/constants';
+import application from '../src/application';
 
 const server = require('../src/server');
 
@@ -13,7 +15,7 @@ describe('Application Endpoint tests', () => {
   let request;
 
   beforeEach(async () => {
-    request = supertest(`http://localhost:${PORT}`);
+    request = supertest(http.createServer(application.instance));
     await mongoose.connect(MONGO_URL);
   });
 
