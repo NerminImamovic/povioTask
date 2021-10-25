@@ -1,12 +1,11 @@
-import express, { Application as ExpressApplication, Handler } from 'express';
+import express, { Application as ExpressApplication } from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import swaggerUi from 'swagger-ui-express';
 
+import { NODE_ENV, MONGO_URL } from './constants';
 import userRoutes from './routes/UserRoutes';
 import * as swaggerDocument from '../swagger.json';
-
-require('dotenv').config();
 
 class Application {
   private readonly _instance: ExpressApplication;
@@ -31,8 +30,8 @@ class Application {
   }
 
   private async connectDatabase() {
-    if (process.env.NODE_ENV !== 'test') {
-      await mongoose.connect(process.env.MONGO_URL);
+    if (NODE_ENV !== 'test') {
+      await mongoose.connect(MONGO_URL);
     }
   }
 }

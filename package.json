@@ -7,7 +7,8 @@
     "build": "tsc",
     "serve": "nodemon ./src/server.ts",
     "start": "./scripts/dev.sh",
-    "test": "jest --forceExit",
+    "test": "./scripts/test.sh",
+    "test-api": "jest --forceExit",
     "lint": "./node_modules/eslint/bin/eslint.js  src --ext .ts",
     "lint:fix": "npm run lint --fix"
   },

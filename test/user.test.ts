@@ -3,16 +3,17 @@
 */
 import mongoose from 'mongoose';
 import supertest from 'supertest';
-import { UserAuth } from '../src/types';
 
-require('dotenv').config();
+import { UserAuth } from '../src/types';
+import { MONGO_URL } from '../src/constants';
+
 const server = require('../src/server');
 
 const request = supertest('http://localhost:3000');
 
 describe('Application Endpoint tests', () => {
   beforeEach(async () => {
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(MONGO_URL);
   });
 
   afterEach(async () => {
@@ -275,7 +276,7 @@ describe('Application Endpoint tests', () => {
     });
   });
 
-  describe('/most-liked - List users in a most liked to least liked', () => {
+  describe('GET /most-liked - List users in a most liked to least liked', () => {
     it('Get most liked', async done => {
       const user1SignupResponse = await request.post('/signup').send({
         username: 'user233',

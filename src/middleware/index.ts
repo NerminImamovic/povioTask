@@ -1,15 +1,20 @@
 import * as jwt from 'jsonwebtoken';
 
+import { JWT_SECRET } from '../constants';
 import { IUser } from '../models/User';
 
 const authenticateUser = (req, res, next) => {
   // Gather the jwt access token from the request header
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) { return res.sendStatus(401); } // if there isn't any token
+  if (!token) {
+    return res.sendStatus(401);
+  }
 
-  jwt.verify(token, 'secret', (err, user:IUser) => {
-    if (err) return res.sendStatus(401);
+  jwt.verify(token, JWT_SECRET, (err, user:IUser) => {
+    if (err) {
+      return res.sendStatus(401);
+    }
     req.user = user;
     next(); // pass the execution off to whatever request the client intended
   });
@@ -29,11 +34,8 @@ const validatePasswordParam = (req, res, next) => {
   next(); // pass the execution off to whatever request the client intended
 };
 
-const generateAccessToken = userId => jwt.sign({ _id: userId }, 'secret', { expiresIn: 3600 });
-
 export {
   authenticateUser,
   validateAuthorizationParameters,
   validatePasswordParam,
-  generateAccessToken,
 };

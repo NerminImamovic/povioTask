@@ -1,8 +1,7 @@
 import * as http from 'http';
 
+import { PORT } from './constants';
 import application from './application';
-
-const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(application.instance);
 
