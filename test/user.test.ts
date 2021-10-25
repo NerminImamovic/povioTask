@@ -9,10 +9,11 @@ import { MONGO_URL, PORT } from '../src/constants';
 
 const server = require('../src/server');
 
-const request = supertest(`http://localhost:${PORT}`);
-
 describe('Application Endpoint tests', () => {
+  let request;
+
   beforeEach(async () => {
+    request = supertest(`http://localhost:${PORT}`);
     await mongoose.connect(MONGO_URL);
   });
 
