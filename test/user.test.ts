@@ -5,11 +5,11 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 
 import { UserAuth } from '../src/types';
-import { MONGO_URL } from '../src/constants';
+import { MONGO_URL, PORT } from '../src/constants';
 
 const server = require('../src/server');
 
-const request = supertest('http://localhost:3000');
+const request = supertest(`http://localhost:${PORT}`);
 
 describe('Application Endpoint tests', () => {
   beforeEach(async () => {
