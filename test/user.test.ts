@@ -17,8 +17,9 @@ describe('Application Endpoint tests', () => {
     await mongoose.connect(MONGO_URL);
   });
 
-  afterEach(async () => {
+  afterEach(async done => {
     await mongoose.connection.dropDatabase();
+    done();
   });
 
   describe('POST /signup - Sign up to the system (username, password)', () => {
