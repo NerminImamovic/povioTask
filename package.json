@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "serve": "nodemon ./src/server.ts",
-    "start": "./scripts/dev.sh",
+    "serve": "node ./release/src/server.js",
+    "dev-server": "nodemon ./src/server.ts",
+    "start": "./scripts/start.sh",
+    "dev": "./scripts/dev.sh",
     "test": "./scripts/test.sh",
     "test-api": "jest --detectOpenHandles --forceExit",
     "lint": "./node_modules/eslint/bin/eslint.js  src --ext .ts",

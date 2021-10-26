@@ -4,12 +4,13 @@ services:
   mongo:
     image: mongo:5.0
     container_name: mongo-dev
+    restart: always
     volumes:
       - ./data/dev/mongo:/data/db
     networks:
       - dev-network
     ports:
-      - "27018:27017"
+      - "27017:27017"
 
 networks:
   dev-network:

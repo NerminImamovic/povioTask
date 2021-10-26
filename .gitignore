@@ -49,7 +49,7 @@ jspm_packages/
 web_modules/
 
 # TypeScript build
-build/
+release/
 
 # TypeScript cache
 *.tsbuildinfo

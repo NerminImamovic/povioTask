@@ -19,7 +19,7 @@ export const signup = async (req:Request, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -34,7 +34,7 @@ export const login = async (req:Request, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -49,7 +49,7 @@ export const getMe = async (req:AuthorizedRequest, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -63,7 +63,7 @@ export const getUserById = async (req:Request, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -82,7 +82,7 @@ export const likeUser = async (req: AuthorizedRequest, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -100,7 +100,7 @@ export const unlikeUser = async (req: AuthorizedRequest, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -117,7 +117,7 @@ export const updatePassword = async (req: AuthorizedRequest, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
 
@@ -132,6 +132,6 @@ export const getMostLikedUsers = async (req:Request, res:Response) => {
     const errStatus = err.status || 500;
     const errorMessage = err.message || SOMETHING_WENT_WRONG_ERROR;
 
-    return res.status(errStatus).json({ error: errorMessage });
+    return res.status(errStatus).json({ message: errorMessage });
   }
 };
