@@ -6,8 +6,8 @@ import supertest from 'supertest';
 import * as http from 'http';
 
 import { UserAuth } from '../src/types';
-import { MONGO_URL, PORT } from '../src/constants';
-import Application from '../src/Application';
+import { MONGO_URL } from '../src/constants';
+import Application from '../src/application';
 
 describe('Application Endpoint tests', () => {
   let request;
@@ -30,7 +30,7 @@ describe('Application Endpoint tests', () => {
       // user signup
       const response = await request.post('/signup').send({ username, password });
 
-      const { username: signupUsername } = exportUserAuthData(response);
+      const { username: signupUsername } = extractUserAuthData(response);
 
       expect(response.status).toBe(200);
       expect(signupUsername).toBe(username);
@@ -47,6 +47,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/signup').send({ username, password });
 
       expect(response.status).toBe(409);
+      expect(extractError(response)).toBe('User with that username already exists.');
       done();
     });
 
@@ -54,6 +55,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/signup').send({ username: 'user' });
 
       expect(response.status).toBe(400);
+      expect(extractError(response)).toBe('User should provide username and password.');
       done();
     });
   });
@@ -63,13 +65,11 @@ describe('Application Endpoint tests', () => {
       const username = 'username';
       const password = 'password';
 
-      // create new user
       await request.post('/signup').send({ username, password });
 
-      // user login with same credentials
       const response = await request.post('/login').send({ username, password });
 
-      const { username: loginUsername } = exportUserAuthData(response);
+      const { username: loginUsername } = extractUserAuthData(response);
 
       expect(response.status).toBe(200);
       expect(loginUsername).toBe(username);
@@ -80,6 +80,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/login').send({ username: 'username' });
 
       expect(response.status).toBe(400);
+      expect(extractError(response)).toBe('User should provide username and password.');
       done();
     });
 
@@ -93,6 +94,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/login').send({ username, password: 'wrong_password' });
 
       expect(response.status).toBe(401);
+      expect(extractError(response)).toBe('Username and password mismatch.');
       done();
     });
   });
@@ -105,7 +107,7 @@ describe('Application Endpoint tests', () => {
         password: '123123',
       });
 
-      const { token: userToken } = exportUserAuthData(signupResponse);
+      const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.get('/me')
         .set('Authorization', `Bearer ${userToken}`);
@@ -119,6 +121,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', 'Bearer zz');
 
       expect(response.status).toBe(401);
+      expect(extractError(response)).toBe('Token is not valid.');
       done();
     });
 
@@ -126,6 +129,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.get('/me');
 
       expect(response.status).toBe(401);
+      expect(extractError(response)).toBe('User should provide token.');
       done();
     });
   });
@@ -138,7 +142,7 @@ describe('Application Endpoint tests', () => {
         password: '123123',
       });
 
-      const { token: userToken } = exportUserAuthData(signupResponse);
+      const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.put('/me/update-password')
         .send({ password: 'password' })
@@ -154,6 +158,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', 'Bearer zz');
 
       expect(response.status).toBe(401);
+      expect(extractError(response)).toBe('Token is not valid.');
       done();
     });
 
@@ -161,6 +166,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.put('/me/update-password');
 
       expect(response.status).toBe(401);
+      expect(extractError(response)).toBe('User should provide token.');
       done();
     });
   });
@@ -171,7 +177,7 @@ describe('Application Endpoint tests', () => {
         username: 'user23',
         password: '123123',
       });
-      const { id: userId } = exportUserAuthData(signupResponse);
+      const { id: userId } = extractUserAuthData(signupResponse);
       const response = await request.get(`/user/${userId}`);
 
       expect(response.status).toBe(200);
@@ -182,6 +188,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.get('/user/1');
 
       expect(response.status).toBe(404);
+      expect(extractError(response)).toBe('User not found.');
       done();
     });
   });
@@ -194,7 +201,7 @@ describe('Application Endpoint tests', () => {
         password: '123123',
       });
 
-      const { token: user1Token } = exportUserAuthData(user1SignupResponse);
+      const { token: user1Token } = extractUserAuthData(user1SignupResponse);
 
       // get id for user2
       const user2SignupResponse = await request.post('/signup').send({
@@ -202,7 +209,7 @@ describe('Application Endpoint tests', () => {
         password: '123123',
       });
 
-      const { id: user2Id } = exportUserAuthData(user2SignupResponse);
+      const { id: user2Id } = extractUserAuthData(user2SignupResponse);
       const response = await request.put(`/user/${user2Id}/like`)
         .set('Authorization', `Bearer ${user1Token}`);
 
@@ -216,12 +223,13 @@ describe('Application Endpoint tests', () => {
         password: '123123',
       });
 
-      const { token: userToken } = exportUserAuthData(signupResponse);
+      const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.put('/user/userId/like')
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(response.status).toBe(404);
+      expect(extractError(response)).toBe('User not found.');
       done();
     });
   });
@@ -231,12 +239,12 @@ describe('Application Endpoint tests', () => {
       // create user1 and get token
       const user1SignupResponse = await request.post('/signup').send({ username: 'user233', password: '123123' });
 
-      const { token: user1Token } = exportUserAuthData(user1SignupResponse);
+      const { token: user1Token } = extractUserAuthData(user1SignupResponse);
 
       // create user2 and get id
       const user2SignupResponse = await request.post('/signup').send({ username: 'user123', password: '123123' });
 
-      const { id: user2Id } = exportUserAuthData(user2SignupResponse);
+      const { id: user2Id } = extractUserAuthData(user2SignupResponse);
 
       const response = await request.put(`/user/${user2Id}/unlike`)
         .set('Authorization', `Bearer ${user1Token}`);
@@ -249,25 +257,27 @@ describe('Application Endpoint tests', () => {
       // create user and getId
       const signupResponse = await request.post('/signup').send({ username: 'user123', password: '123123' });
 
-      const { id: userId } = exportUserAuthData(signupResponse);
+      const { id: userId } = extractUserAuthData(signupResponse);
 
       // <<< NOTE: Use wrong token
       const response = await request.put(`/user/${userId}/unlike`)
         .set('Authorization', 'Bearer zz');
 
       expect(response.status).toBe(401);
+      expect(extractError(response)).toBe('Token is not valid.');
       done();
     });
 
     it('Unlike User (User Not Found)', async done => {
       // create user and get token
       const signupResponse = await request.post('/signup').send({ username: 'user1223', password: '123123' });
-      const { token: userToken } = exportUserAuthData(signupResponse);
+      const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.put('/user/userId/unlike')
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(response.status).toBe(404);
+      expect(extractError(response)).toBe('User not found.');
       done();
     });
   });
@@ -276,10 +286,10 @@ describe('Application Endpoint tests', () => {
     it('Get most liked', async done => {
       // Create two users and get their ids and tokens
       const user1SignupResponse = await request.post('/signup').send({ username: 'user233', password: '123123' });
-      const { token: user1Token, id: user1Id } = exportUserAuthData(user1SignupResponse);
+      const { token: user1Token, id: user1Id } = extractUserAuthData(user1SignupResponse);
 
       const user2SignupResponse = await request.post('/signup').send({ username: 'user123', password: '123123' });
-      const { token: user2Token, id: user2Id } = exportUserAuthData(user2SignupResponse);
+      const { token: user2Token, id: user2Id } = extractUserAuthData(user2SignupResponse);
 
       // User1 likes user2
       await request.put(`/user/${user2Id}/like`)
@@ -309,9 +319,15 @@ describe('Application Endpoint tests', () => {
   });
 
   // Helpers
-  function exportUserAuthData(response):UserAuth {
+  function extractUserAuthData(response):UserAuth {
     const responseData = response.text;
     const responseBody = JSON.parse(responseData);
     return responseBody;
+  }
+
+  function extractError(response):string {
+    const responseData = response.text;
+    const responseBody = JSON.parse(responseData);
+    return responseBody.error;
   }
 });

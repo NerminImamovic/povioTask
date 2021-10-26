@@ -63,16 +63,16 @@ UserSchema.statics.authenticate = async (userAuthOptions:UserAuthOptions):Promis
   const user = await User.findOne({ username });
 
   if (!user) {
-    throw new HttpError({ status: 404, message: 'User not found' });
+    throw new HttpError({ status: 404, message: 'User not found.' });
   }
 
   const result = await bcrypt.compare(password, user.password);
 
-  if (result) {
-    return user;
+  if (!result) {
+    throw new HttpError({ status: 401, message: 'Username and password mismatch.' });
   }
 
-  throw new HttpError({ status: 401, message: 'Username and password mismatch' });
+  return user;
 };
 
 const User: IUserModel = model<IUser, IUserModel>('User', UserSchema);

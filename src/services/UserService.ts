@@ -18,7 +18,7 @@ export default class UserService implements IUserService {
     const existingUser = await User.findOne({ username: userAuthOptions.username });
 
     if (existingUser) {
-      throw new HttpError({ status: 409, message: 'User with that username currently exists' });
+      throw new HttpError({ status: 409, message: 'User with that username already exists.' });
     }
 
     const user = await User.create(userAuthOptions);
