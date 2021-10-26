@@ -47,7 +47,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/signup').send({ username, password });
 
       expect(response.status).toBe(409);
-      expect(extractError(response)).toBe('User with that username already exists.');
+      expect(extractErrorMessage(response)).toBe('User with that username already exists.');
       done();
     });
 
@@ -55,7 +55,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/signup').send({ username: 'user' });
 
       expect(response.status).toBe(400);
-      expect(extractError(response)).toBe('User should provide username and password.');
+      expect(extractErrorMessage(response)).toBe('User should provide username and password.');
       done();
     });
   });
@@ -80,7 +80,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/login').send({ username: 'username' });
 
       expect(response.status).toBe(400);
-      expect(extractError(response)).toBe('User should provide username and password.');
+      expect(extractErrorMessage(response)).toBe('User should provide username and password.');
       done();
     });
 
@@ -94,7 +94,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.post('/login').send({ username, password: 'wrong_password' });
 
       expect(response.status).toBe(401);
-      expect(extractError(response)).toBe('Username and password mismatch.');
+      expect(extractErrorMessage(response)).toBe('Username and password mismatch.');
       done();
     });
   });
@@ -121,7 +121,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', 'Bearer zz');
 
       expect(response.status).toBe(401);
-      expect(extractError(response)).toBe('Token is not valid.');
+      expect(extractErrorMessage(response)).toBe('Token is not valid.');
       done();
     });
 
@@ -129,7 +129,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.get('/me');
 
       expect(response.status).toBe(401);
-      expect(extractError(response)).toBe('User should provide token.');
+      expect(extractErrorMessage(response)).toBe('User should provide token.');
       done();
     });
   });
@@ -158,7 +158,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', 'Bearer zz');
 
       expect(response.status).toBe(401);
-      expect(extractError(response)).toBe('Token is not valid.');
+      expect(extractErrorMessage(response)).toBe('Token is not valid.');
       done();
     });
 
@@ -166,7 +166,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.put('/me/update-password');
 
       expect(response.status).toBe(401);
-      expect(extractError(response)).toBe('User should provide token.');
+      expect(extractErrorMessage(response)).toBe('User should provide token.');
       done();
     });
   });
@@ -188,7 +188,7 @@ describe('Application Endpoint tests', () => {
       const response = await request.get('/user/1');
 
       expect(response.status).toBe(404);
-      expect(extractError(response)).toBe('User not found.');
+      expect(extractErrorMessage(response)).toBe('User not found.');
       done();
     });
   });
@@ -229,7 +229,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(response.status).toBe(404);
-      expect(extractError(response)).toBe('User not found.');
+      expect(extractErrorMessage(response)).toBe('User not found.');
       done();
     });
   });
@@ -264,7 +264,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', 'Bearer zz');
 
       expect(response.status).toBe(401);
-      expect(extractError(response)).toBe('Token is not valid.');
+      expect(extractErrorMessage(response)).toBe('Token is not valid.');
       done();
     });
 
@@ -277,7 +277,7 @@ describe('Application Endpoint tests', () => {
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(response.status).toBe(404);
-      expect(extractError(response)).toBe('User not found.');
+      expect(extractErrorMessage(response)).toBe('User not found.');
       done();
     });
   });
@@ -325,9 +325,9 @@ describe('Application Endpoint tests', () => {
     return responseBody;
   }
 
-  function extractError(response):string {
+  function extractErrorMessage(response):string {
     const responseData = response.text;
     const responseBody = JSON.parse(responseData);
-    return responseBody.error;
+    return responseBody.message;
   }
 });
