@@ -2,13 +2,13 @@
 set -e
 
 cleanup() {
-  docker-compose -f docker-compose.dev.yml down
+  docker-compose -f docker-compose.local.yml down
 }
 
 cleanup
 
-cp ./env.dev ./.env
+cp ./env.default ./.env
 
-COMPOSE_HTTP_TIMEOUT=120 docker-compose -f docker-compose.dev.yml up -d
+COMPOSE_HTTP_TIMEOUT=120 docker-compose -f docker-compose.local.yml up -d --force-recreate
 
 npm run serve

@@ -28,7 +28,7 @@ $ cd povioTask
 #### 2. Install dependencies
 
 ```
-$ npm i
+$ npm install
 ```
 
 ## II. Configuration
@@ -46,9 +46,9 @@ $ npm run dev
 Running the above commands results in 
 * 🌏**API Server** running at `http://localhost:3000`
 * ⚙️**Swagger UI** at `http://localhost:3000/`
-* 🛢️**MongoDB** running at `mongodb://localhost:27018`
+* 🛢️**MongoDB** running at `mongodb://localhost:27017`
 
-(feel free to changes the env variables in .env.dev)
+(feel free to changes the env variables in .env.default)
 
 ## IV. Packaging and Deployment
 
@@ -60,23 +60,19 @@ $ npm run build && npm run start
 
 #### 2. Run with docker
 
+We can make production build using docker.
+
+Build docker image.
+
 ```
 $ docker build -t api-server .
-$ docker run -t -i \
-      --env NODE_ENV=production \
-      --env MONGO_URL=mongodb://localhost:27017/users \
-      --env PORT=3000 \
-      --env JWT_SECRET=secret \
-      -p 3000:3000 \
-      api-server
 ```
 
-#### 3. Run with docker-compose
+Start application using docker-compose.
 
 ```
 $ docker-compose up
 ```
-
 
 ---
 
@@ -87,9 +83,13 @@ There are environment variables for development and test environments in files `
 |---|---|---|---|
 | NODE_ENV  | string  | `development` |API runtime environment. eg: `staging`  |
 |  PORT | number  | `3000` | Port to run the API server on |
-|  MONGO_URL | string  | `mongodb://localhost:27018/users` | URL for MongoDB |
+|  MONGO_URL | string  | `mongodb://localhost:27017/users` | URL for MongoDB |
 |  JWT_SECRET | string  | `secret` | Jwt Secret |
 
 ## Logging
 The application uses [winston](https://github.com/winstonjs/winston) as the default logger. The configuration file is at `src/logger.ts`.
-* Console messages are prettified
+
+* development and test environments log errors in the console
+* production environment logs error in the files in /log folder
+
+*Console messages are prettified 

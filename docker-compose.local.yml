@@ -3,15 +3,15 @@ version: '3'
 services:
   mongo:
     image: mongo:5.0
-    container_name: mongo-dev
+    container_name: mongo-local
     restart: always
     volumes:
-      - ./data/dev/mongo:/data/db
+      - ./data/local/mongo:/data/db
     networks:
-      - dev-network
+      - local-network
     ports:
       - "27017:27017"
 
 networks:
-  dev-network:
+  local-network:
     driver: bridge
