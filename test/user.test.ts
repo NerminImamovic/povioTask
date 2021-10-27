@@ -10,10 +10,9 @@ import { MONGO_URL } from '../src/constants';
 import Application from '../src/application';
 
 describe('Application Endpoint tests', () => {
-  let request;
+  const request = supertest(http.createServer(Application.instance));
 
   beforeAll(async () => {
-    request = supertest(http.createServer(Application.instance));
     await mongoose.connect(MONGO_URL);
   });
 
