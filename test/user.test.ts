@@ -12,7 +12,7 @@ import Application from '../src/application';
 describe('Application Endpoint tests', () => {
   let request;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     request = supertest(http.createServer(Application.instance));
     await mongoose.connect(MONGO_URL);
   });
@@ -319,13 +319,13 @@ describe('Application Endpoint tests', () => {
   });
 
   // Helpers
-  function extractUserAuthData(response):UserAuth {
+  function extractUserAuthData(response): UserAuth {
     const responseData = response.text;
     const responseBody = JSON.parse(responseData);
     return responseBody;
   }
 
-  function extractErrorMessage(response):string {
+  function extractErrorMessage(response): string {
     const responseData = response.text;
     const responseBody = JSON.parse(responseData);
     return responseBody.message;

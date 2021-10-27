@@ -15,7 +15,7 @@ const authenticateUser = (req, res, next) => {
     return res.status(httpError.status).json({ message: httpError.message });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, user:IUser) => {
+  jwt.verify(token, JWT_SECRET, (err, user: IUser) => {
     if (err) {
       const httpError = new HttpError({ status: 401, message: 'Token is not valid.' });
 

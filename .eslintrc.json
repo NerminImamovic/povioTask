@@ -56,6 +56,10 @@
       "error",
       "as-needed"
     ],
+    "@typescript-eslint/type-annotation-spacing": ["error", {
+      "before": false,
+      "after": true
+    }],
     "no-extra-semi": 0,
     "import/no-unresolved": "off",
     "import/prefer-default-export": 0,

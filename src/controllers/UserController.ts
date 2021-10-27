@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import UserService from '../services/UserService';
 import { IUserService } from '../services/interfaces';
@@ -6,9 +6,9 @@ import { AuthorizedRequest } from '../helpers/AuthorizedRequest';
 import logger from '../lib/logger';
 import { SOMETHING_WENT_WRONG_ERROR } from '../constants';
 
-const userService:IUserService = new UserService();
+const userService: IUserService = new UserService();
 
-export const signup = async (req:Request, res:Response) => {
+export const signup = async (req: Request, res: Response) => {
   logger.info('POST /signup');
 
   try {
@@ -23,7 +23,7 @@ export const signup = async (req:Request, res:Response) => {
   }
 };
 
-export const login = async (req:Request, res:Response) => {
+export const login = async (req: Request, res: Response) => {
   logger.info('POST /login');
 
   try {
@@ -38,7 +38,7 @@ export const login = async (req:Request, res:Response) => {
   }
 };
 
-export const getMe = async (req:AuthorizedRequest, res:Response) => {
+export const getMe = async (req: AuthorizedRequest, res: Response) => {
   logger.info('GET /me');
 
   try {
@@ -53,7 +53,7 @@ export const getMe = async (req:AuthorizedRequest, res:Response) => {
   }
 };
 
-export const getUserById = async (req:Request, res:Response) => {
+export const getUserById = async (req: Request, res: Response) => {
   logger.info('GET /user/:id');
 
   try {
@@ -67,7 +67,7 @@ export const getUserById = async (req:Request, res:Response) => {
   }
 };
 
-export const likeUser = async (req: AuthorizedRequest, res:Response) => {
+export const likeUser = async (req: AuthorizedRequest, res: Response) => {
   logger.info('PUT /user/:id/like');
 
   try {
@@ -86,7 +86,7 @@ export const likeUser = async (req: AuthorizedRequest, res:Response) => {
   }
 };
 
-export const unlikeUser = async (req: AuthorizedRequest, res:Response) => {
+export const unlikeUser = async (req: AuthorizedRequest, res: Response) => {
   logger.info('PUT /user/:id/unlike');
 
   try {
@@ -104,7 +104,7 @@ export const unlikeUser = async (req: AuthorizedRequest, res:Response) => {
   }
 };
 
-export const updatePassword = async (req: AuthorizedRequest, res:Response) => {
+export const updatePassword = async (req: AuthorizedRequest, res: Response) => {
   logger.info('PUT /me/update-password');
 
   try {
@@ -121,7 +121,7 @@ export const updatePassword = async (req: AuthorizedRequest, res:Response) => {
   }
 };
 
-export const getMostLikedUsers = async (req:Request, res:Response) => {
+export const getMostLikedUsers = async (req: Request, res: Response) => {
   logger.info('GET /most-liked');
 
   try {

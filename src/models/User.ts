@@ -14,7 +14,7 @@ export interface IUser {
 }
 
 interface IUserModel extends Model<IUser> {
-  authenticate(userAuthOptions:UserAuthOptions):IUser;
+  authenticate(userAuthOptions: UserAuthOptions): IUser;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -57,7 +57,7 @@ UserSchema.pre('updateOne', { document: true, query: true }, async function (nex
 });
 
 // authenticate input against database
-UserSchema.statics.authenticate = async (userAuthOptions:UserAuthOptions):Promise<IUser> => {
+UserSchema.statics.authenticate = async (userAuthOptions: UserAuthOptions): Promise<IUser> => {
   const { username, password } = userAuthOptions;
 
   const user = await User.findOne({ username });

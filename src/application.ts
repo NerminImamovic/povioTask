@@ -27,7 +27,11 @@ class Application {
   private registerRouters() {
     this._instance.use(userRoutes);
 
-    this._instance.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    this._instance.get('/', (req, res) => {
+      res.redirect('/api-docs');
+    });
+
+    this._instance.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   }
 
   private async connectDatabase() {

@@ -9,12 +9,12 @@ import { generateAccessToken } from '../helpers/JwtHelper';
 import { HttpError } from '../helpers/errors/HttpError';
 
 export default class UserService implements IUserService {
-  public async getUser(id: string):Promise<UserPublic> {
+  public async getUser(id: string): Promise<UserPublic> {
     const user = await this.getUserFromDatabase(id);
     return this.mapUserToUserPublic(user);
   }
 
-  public async signup(userAuthOptions:UserAuthOptions):Promise<UserAuth> {
+  public async signup(userAuthOptions: UserAuthOptions): Promise<UserAuth> {
     const existingUser = await User.findOne({ username: userAuthOptions.username });
 
     if (existingUser) {
@@ -25,12 +25,12 @@ export default class UserService implements IUserService {
     return this.mapUserToUserAuth(user);
   }
 
-  public async login(userAuthOptions:UserAuthOptions):Promise<UserAuth> {
+  public async login(userAuthOptions: UserAuthOptions): Promise<UserAuth> {
     const user = await User.authenticate(userAuthOptions);
     return this.mapUserToUserAuth(user);
   }
 
-  public async updateLikes(data: any):Promise<void> {
+  public async updateLikes(data: any): Promise<void> {
     const user = await this.getUserFromDatabase(data.userId);
     const likes = new Set(user.likes as string[]);
 
@@ -43,11 +43,11 @@ export default class UserService implements IUserService {
     await User.updateOne({ _id: data.userId }, { $set: { likes: Array.from(likes) } });
   }
 
-  public async updatePassword(data):Promise<void> {
+  public async updatePassword(data): Promise<void> {
     await User.updateOne({ _id: data.userId }, { $set: { password: data.password } });
   }
 
-  public async getMostLikedUsers():Promise<UserPublic[]> {
+  public async getMostLikedUsers(): Promise<UserPublic[]> {
     const users = await User.find({}).lean();
 
     return _.chain(users)
@@ -55,7 +55,7 @@ export default class UserService implements IUserService {
       .orderBy('likes', 'desc');
   }
 
-  private async getUserFromDatabase(id: string):Promise<IUser> {
+  private async getUserFromDatabase(id: string): Promise<IUser> {
     try {
       return await User.findById(id).lean();
     } catch (err) {
@@ -63,7 +63,7 @@ export default class UserService implements IUserService {
     }
   }
 
-  private mapUserToUserPublic(user:IUser):UserPublic {
+  private mapUserToUserPublic(user: IUser): UserPublic {
     return {
       id: user._id,
       username: user.username,
@@ -73,7 +73,7 @@ export default class UserService implements IUserService {
     };
   }
 
-  private mapUserToUserAuth(user:IUser):UserAuth {
+  private mapUserToUserAuth(user: IUser): UserAuth {
     const token = generateAccessToken(user._id);
 
     return {
