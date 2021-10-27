@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
 
-import UserService from '../services/UserService';
-import { IUserService } from '../services/interfaces';
 import { AuthorizedRequest } from '../helpers/AuthorizedRequest';
 import logger from '../lib/logger';
 import { SOMETHING_WENT_WRONG_ERROR } from '../constants';
+import { IUserRepository } from '../repositories/interfaces';
+import { UserRepository } from '../repositories';
+import { UserService } from '../services';
+import { IUserService } from '../services/interfaces';
 
-const userService: IUserService = new UserService();
+const userRepository: IUserRepository = new UserRepository();
+const userService: IUserService = new UserService({ userRepository });
 
 export const signup = async (req: Request, res: Response) => {
   logger.info('POST /signup');

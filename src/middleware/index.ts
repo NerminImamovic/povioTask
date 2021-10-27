@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 
 import { JWT_SECRET } from '../constants';
-import { IUser } from '../models/User';
+import { IUser } from '../interfaces';
 import { HttpError } from '../helpers/errors/HttpError';
 
 const authenticateUser = (req, res, next) => {
