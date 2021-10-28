@@ -11,7 +11,7 @@ COPY src ./src
 COPY tsconfig.json ./tsconfig.json
 COPY swagger.json ./swagger.json
 
-# Build dist
+# Build release
 RUN npm run build
 
 # Start production image build

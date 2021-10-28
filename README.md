@@ -128,3 +128,14 @@ The application uses [winston](https://github.com/winstonjs/winston) as the defa
 
 * Development and Test environments log errors in the console (Console messages are prettified)
 * Production environment logs error in the files in `/log` folder
+
+## Routes
+
+* /signup - Sign up to the system (username, password)
+* /login - Logs in an existing user with a password
+* /me - Get the currently logged in user information (Need to provide `Auth: Bearer token` param in Headers).
+* /me/update-password - Update the current users password (Need to provide `Auth: Bearer token` param in Headers).
+* /user/:id/ - List username & number of likes of a user
+* /user/:id/like - Like a user (Need to provide `Auth: Bearer token` param in Headers).
+* /user/:id/unlike - Un-Like a user (Need to provide `Auth: Bearer token` param in Headers).
+* /most-liked - List users in a most liked to least liked

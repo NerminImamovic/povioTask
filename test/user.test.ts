@@ -109,7 +109,7 @@ describe('Application Endpoint tests', () => {
       const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.get('/me')
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Auth', `Bearer ${userToken}`);
 
       expect(response.status).toBe(200);
       done();
@@ -117,7 +117,7 @@ describe('Application Endpoint tests', () => {
 
     it('Get Me (Bad token)', async done => {
       const response = await request.get('/me')
-        .set('Authorization', 'Bearer zz');
+        .set('Auth', 'Bearer zz');
 
       expect(response.status).toBe(401);
       expect(extractErrorMessage(response)).toBe('Token is not valid.');
@@ -145,7 +145,7 @@ describe('Application Endpoint tests', () => {
 
       const response = await request.put('/me/update-password')
         .send({ password: 'password' })
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Auth', `Bearer ${userToken}`);
 
       expect(response.status).toBe(200);
       done();
@@ -154,7 +154,7 @@ describe('Application Endpoint tests', () => {
     it('Update Password (Bad token)', async done => {
       const response = await request.put('/me/update-password')
         .send({ password: 'password' })
-        .set('Authorization', 'Bearer zz');
+        .set('Auth', 'Bearer zz');
 
       expect(response.status).toBe(401);
       expect(extractErrorMessage(response)).toBe('Token is not valid.');
@@ -210,7 +210,7 @@ describe('Application Endpoint tests', () => {
 
       const { id: user2Id } = extractUserAuthData(user2SignupResponse);
       const response = await request.put(`/user/${user2Id}/like`)
-        .set('Authorization', `Bearer ${user1Token}`);
+        .set('Auth', `Bearer ${user1Token}`);
 
       expect(response.status).toBe(200);
       done();
@@ -225,7 +225,7 @@ describe('Application Endpoint tests', () => {
       const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.put('/user/userId/like')
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Auth', `Bearer ${userToken}`);
 
       expect(response.status).toBe(404);
       expect(extractErrorMessage(response)).toBe('User not found.');
@@ -246,7 +246,7 @@ describe('Application Endpoint tests', () => {
       const { id: user2Id } = extractUserAuthData(user2SignupResponse);
 
       const response = await request.put(`/user/${user2Id}/unlike`)
-        .set('Authorization', `Bearer ${user1Token}`);
+        .set('Auth', `Bearer ${user1Token}`);
 
       expect(response.status).toBe(200);
       done();
@@ -260,7 +260,7 @@ describe('Application Endpoint tests', () => {
 
       // <<< NOTE: Use wrong token
       const response = await request.put(`/user/${userId}/unlike`)
-        .set('Authorization', 'Bearer zz');
+        .set('Auth', 'Bearer zz');
 
       expect(response.status).toBe(401);
       expect(extractErrorMessage(response)).toBe('Token is not valid.');
@@ -273,7 +273,7 @@ describe('Application Endpoint tests', () => {
       const { token: userToken } = extractUserAuthData(signupResponse);
 
       const response = await request.put('/user/userId/unlike')
-        .set('Authorization', `Bearer ${userToken}`);
+        .set('Auth', `Bearer ${userToken}`);
 
       expect(response.status).toBe(404);
       expect(extractErrorMessage(response)).toBe('User not found.');
@@ -292,15 +292,15 @@ describe('Application Endpoint tests', () => {
 
       // User1 likes user2
       await request.put(`/user/${user2Id}/like`)
-        .set('Authorization', `Bearer ${user1Token}`);
+        .set('Auth', `Bearer ${user1Token}`);
 
       // User2 likes user2
       await request.put(`/user/${user2Id}/like`)
-        .set('Authorization', `Bearer ${user2Token}`);
+        .set('Auth', `Bearer ${user2Token}`);
 
       // User2 likes user1
       await request.put(`/user/${user1Id}/like`)
-        .set('Authorization', `Bearer ${user2Token}`);
+        .set('Auth', `Bearer ${user2Token}`);
 
       const response = await request.get('/most-liked');
 

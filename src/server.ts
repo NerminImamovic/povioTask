@@ -4,6 +4,7 @@ import {
   PORT,
   NODE_ENV,
   TEST_ENV,
+  DEVELOPMENT_ENV,
 } from './constants';
 import Application from './application';
 import logger from './lib/logger';

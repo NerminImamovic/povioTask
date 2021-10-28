@@ -5,8 +5,10 @@ import { IUser } from '../interfaces';
 import { HttpError } from '../helpers/errors/HttpError';
 
 const authenticateUser = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers.auth;
+  const token = authHeader
+    && authHeader.substring(0, 7) === 'Bearer '
+    && authHeader.split(' ')[1];
 
   if (!token) {
     const httpError = new HttpError({ status: 401, message: 'User should provide token.' });
