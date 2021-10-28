@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { BCRYPT_SALT_ROUNDS } from '../constants';
 
 import { HttpError } from '../helpers/errors/HttpError';
 import { UserAuthOptions } from '../helpers/TypeOptions';
@@ -15,7 +16,7 @@ export default class UserRepository implements IUserRepository {
       throw new HttpError({ status: 409, message: 'User with that username already exists.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
     return User.create({ username, password: hashedPassword });
   }
@@ -52,7 +53,7 @@ export default class UserRepository implements IUserRepository {
 
   async updateUser(userId: string, updateParams: any): Promise<void> {
     const passwordHash = updateParams.password
-      ? await bcrypt.hash(updateParams.password, 10)
+      ? await bcrypt.hash(updateParams.password, BCRYPT_SALT_ROUNDS)
       : undefined;
 
     await User.updateOne({ _id: userId }, { $set: { ...updateParams, password: passwordHash } });

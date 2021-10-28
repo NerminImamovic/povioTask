@@ -3,7 +3,11 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import swaggerUi from 'swagger-ui-express';
 
-import { NODE_ENV, MONGO_URL } from './constants';
+import {
+  NODE_ENV,
+  MONGO_URL,
+  TEST_ENV,
+} from './constants';
 import userRoutes from './routes/UserRoutes';
 import * as swaggerDocument from '../swagger.json';
 import logger from './lib/logger';
@@ -35,7 +39,7 @@ class Application {
   }
 
   private async connectDatabase() {
-    if (NODE_ENV !== 'test') {
+    if (NODE_ENV !== TEST_ENV) {
       await mongoose.connect(MONGO_URL);
       logger.info('Database successfully connected');
     }

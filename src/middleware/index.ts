@@ -5,7 +5,6 @@ import { IUser } from '../interfaces';
 import { HttpError } from '../helpers/errors/HttpError';
 
 const authenticateUser = (req, res, next) => {
-  // Gather the jwt access token from the request header
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -22,7 +21,7 @@ const authenticateUser = (req, res, next) => {
       return res.status(httpError.status).json({ message: httpError.message });
     }
     req.user = user;
-    next(); // pass the execution off to whatever request the client intended
+    next();
   });
 };
 
@@ -32,7 +31,7 @@ const validateAuthorizationParameters = (req, res, next) => {
 
     return res.status(httpError.status).json({ message: httpError.message });
   }
-  next(); // pass the execution off to whatever request the client intended
+  next();
 };
 
 const validatePasswordParam = (req, res, next) => {
@@ -41,7 +40,7 @@ const validatePasswordParam = (req, res, next) => {
 
     return res.status(httpError.status).json({ message: httpError.message });
   }
-  next(); // pass the execution off to whatever request the client intended
+  next();
 };
 
 export {
