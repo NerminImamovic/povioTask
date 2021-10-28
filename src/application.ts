@@ -1,6 +1,7 @@
 import express, { Application as ExpressApplication } from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 
 import {
@@ -18,6 +19,7 @@ class Application {
   public constructor() {
     this.connectDatabase();
     this._instance = express();
+    this._instance.use(cors());
     this._instance.use(express.json());
     this._instance.use(bodyParser.json());
     this._instance.use(bodyParser.urlencoded({ extended: true }));
