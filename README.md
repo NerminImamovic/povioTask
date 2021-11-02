@@ -2,7 +2,7 @@
 
 Node.js Povio Assignment - Nermin Imamovic
 
-* The reason for using MongoDB is practicing NoSql (AP in CAP Theorem) and comparing knowledge in relation to my previous application.
+* The reason for using MongoDB is practicing NoSql (CP in CAP Theorem) and comparing knowledge in relation to my previous application.
 
 A few things to note in the project:
 * **[Github Actions Workflows](https://github.com/NerminImamovic/povioTask/tree/master/.github/workflows)** -
